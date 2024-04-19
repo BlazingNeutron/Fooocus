@@ -26,13 +26,11 @@ services:
       - path_outputs=/content/app/outputs/    # Warning: If it is not located under '/content/app', you can't see history log!
     volumes:
       - fooocus-data:/content/data
-      #- ./models:/import/models   # Once you import files, you don't need to mount again.
-      #- ./outputs:/import/outputs  # Once you import files, you don't need to mount again.
+      - ./models:/import/models   # Once you import files, you don't need to mount again.
+      - ./outputs:/import/outputs  # Once you import files, you don't need to mount again.
     tty: true
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ['0']
-              capabilities: [compute, utility]
+    security_opt:
+      - seccomp:unconfined
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
